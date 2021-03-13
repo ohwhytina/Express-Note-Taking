@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 const { notes } = require("./db/db.json");
 
-const PORT = process.env.PORT || 3005;
+const PORT = process.env.PORT || 3006;
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -15,22 +15,37 @@ app.get( '/notes', (req, res) => {
     res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
 
+// show note.html
+app.get("/api/notes", (req, res) => {
+    res.sendFile(path.join(__dirname, "/db/db.json"));
+});
+
+// go back to main page
+app.get( '/', (req, res) => {
+    res.sendFile(path.join(__dirname, "/public/index.html"));
+});
+
+
+
 // save notes! 
 app.post('/api/notes', (req, res) => {
     const newNote = req.body;
-    const listNotes = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
-    const newId = listNotes.length.toString();
+    const saveNote = JSON.parse(fs.readFileSync("./db/db.json"));
+    const newId = saveNote.length.toString();
     newNote.id = newId;
-    listNotes.push(newNote);
+    saveNote.push(newNote);
     
     fs.writeFileSync(
         path.join(__dirname, './db/db.json'),
-        JSON.stringify(listNotes)
+        JSON.stringify(saveNote)
     );
-console.log(listNotes);
-    res.json(listNotes)
-
+    console.log(saveNote);
+    res.json(saveNote)
 });
+
+// delete notes 
+
+
 
 
 app.listen(PORT, () => { 
