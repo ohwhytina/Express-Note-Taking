@@ -17,7 +17,9 @@ npm i express
 
 ## Usage
 Click on the following link [https://radiant-journey-31112.herokuapp.com/](https://radiant-journey-31112.herokuapp.com/) 
-to head to the deployed application 
+to head to the deployed application
+
+[Demo](https://raw.githubusercontent.com/ohwhytina/Express-Note-Taking/main/Demo/Note%20Taker.gif)
 
 ## License
 
