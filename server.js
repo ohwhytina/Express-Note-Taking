@@ -3,7 +3,7 @@ const path = require('path');
 const express = require('express');
 
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 5000;
 const app = express();
 
 
@@ -13,19 +13,19 @@ app.use(express.static("public"));
 
 // pull note.html
 app.get("/notes", (req, res) => {
-    res.sendFile(path.join(__dirname, "/public/notes.html"));
+    res.sendFile(path.join(__dirname, "./public/notes.html"));
 });
 
 
 // show note.html
 app.get("/api/notes", (req, res) => {
-    res.sendFile(path.join(__dirname, "/db/db.json"));
-})
+    res.sendFile(path.join(__dirname, "./db/db.json"));
+});
 
 
 // go back to main page
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "/public/index.html"));
+    res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 
@@ -53,7 +53,6 @@ app.delete("/api/notes/:id", (req, res) => {
     console.log(saveNote);
     res.json(saveNote)
 });
-
 
 
 app.listen(PORT, () => { 
