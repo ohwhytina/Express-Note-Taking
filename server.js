@@ -9,7 +9,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(express.static("public"));
+app.use(express.static('public'));
 
 // pull note.html
 app.get("/notes", (req, res) => {
@@ -33,7 +33,7 @@ app.get("*", (req, res) => {
 app.post("/api/notes", (req, res) => {
     var saveNote = JSON.parse(fs.readFileSync("./db/db.json", "utf8"));
     var newNote = req.body;
-    newNote.id = saveNote.length.toString()
+    newNote.id = saveNote.length.toString();
     saveNote.push(newNote);
     
     fs.writeFileSync("./db/db.json", JSON.stringify(saveNote));
