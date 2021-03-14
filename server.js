@@ -6,6 +6,8 @@ const { notes } = require("./db/db.json");
 const PORT = process.env.PORT || 3006;
 const app = express();
 
+var saveNote = JSON.parse(fs.readFileSync('./db/db.json', 'utf-8'));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static("public"));
@@ -15,24 +17,25 @@ app.get( '/notes', (req, res) => {
     res.sendFile(path.join(__dirname, "/public/notes.html"));
 });
 
+
 // show note.html
 app.get("/api/notes", (req, res) => {
-    res.sendFile(path.join(__dirname, "/db/db.json"));
+    return res.json(saveNote)
+    
 });
 
+
 // go back to main page
-app.get( '/', (req, res) => {
-    res.sendFile(path.join(__dirname, "/public/index.html"));
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "./public/index.html"));
 });
 
 
 
 // save notes! 
 app.post('/api/notes', (req, res) => {
-    const newNote = req.body;
-    const saveNote = JSON.parse(fs.readFileSync("./db/db.json"));
-    const newId = saveNote.length.toString();
-    newNote.id = newId;
+    var newNote = req.body;
+    newNote.id = saveNote.length.toString()
     saveNote.push(newNote);
     
     fs.writeFileSync(
@@ -44,7 +47,24 @@ app.post('/api/notes', (req, res) => {
 });
 
 // delete notes 
+app.delete('/api/notes/:id', (req, res) => {
+    var noteId = req.params.id;
+    var newId = 0;
+    saveNote = saveNote.filter(List => {
+        return List.id != noteId
+    })
+    for (List of saveNote) {
+        List.id = newId.toString();
+        newId++;
+    }
 
+    fs.writeFileSync(
+        path.join(__dirname, './db/db.json'),
+        JSON.stringify(saveNote)
+    );
+    console.log(saveNote);
+    res.json(saveNote)
+})
 
 
 
